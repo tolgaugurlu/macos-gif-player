@@ -4,16 +4,18 @@ import SwiftUI
 struct GIFPlayerApp: App {
     var body: some Scene {
         WindowGroup {
-            if #available(macOS 14.0, *) {
-                ContentView()
-                    .frame(minWidth: 600, minHeight: 400)
-            } else {
-                Text("Bu uygulama macOS 14.0 veya üzeri gerektirir.")
-                    .frame(width: 300, height: 200)
-            }
+            ContentView()
+                .frame(minWidth: 800, minHeight: 600)
+                .onAppear {
+                    NSWindow.allowsAutomaticWindowTabbing = false
+                    if let window = NSApplication.shared.windows.first {
+                        window.styleMask.remove(.resizable)
+                        window.setContentSize(NSSize(width: 800, height: 600))
+                        window.center()
+                    }
+                }
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
-        .defaultSize(width: 800, height: 600)
     }
 } 

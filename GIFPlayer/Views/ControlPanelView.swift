@@ -1,82 +1,50 @@
 import SwiftUI
 
 struct ControlPanelView: View {
-    @Binding var isPlaying: Bool
-    @Binding var playbackSpeed: Double
-    @Binding var showEffectsMenu: Bool
-    @Binding var selectedEffect: ImageEffect
-    
-    let onOpenTapped: () -> Void
-    let onPlayPauseTapped: () -> Void
-    let onNextFrame: () -> Void
-    let onPreviousFrame: () -> Void
+    @ObservedObject var viewModel: GIFPlayerViewModel
     
     var body: some View {
         HStack(spacing: 20) {
-            Button(action: onOpenTapped) {
-                Image(systemName: "folder")
-                    .font(.title2)
+            Button(action: viewModel.previousFrame) {
+                Image(systemName: "backward.frame.fill")
             }
-            .help("GIF Dosyası Aç")
+            .keyboardShortcut(.leftArrow, modifiers: [])
             
-            Divider()
-            
-            HStack(spacing: 12) {
-                Button(action: onPreviousFrame) {
-                    Image(systemName: "backward.frame")
-                        .font(.title2)
-                }
-                .help("Önceki Kare")
-                
-                Button(action: onPlayPauseTapped) {
-                    Image(systemName: isPlaying ? "pause.fill" : "play.fill")
-                        .font(.title2)
-                }
-                .help(isPlaying ? "Durdur" : "Oynat")
-                
-                Button(action: onNextFrame) {
-                    Image(systemName: "forward.frame")
-                        .font(.title2)
-                }
-                .help("Sonraki Kare")
+            Button(action: viewModel.togglePlayPause) {
+                Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
             }
+            .keyboardShortcut(.space, modifiers: [])
             
-            Divider()
-            
-            VStack(alignment: .leading) {
-                Text("Hız: \(String(format: "%.1fx", playbackSpeed))")
-                    .font(.caption)
-                Slider(value: $playbackSpeed, in: 0.1...2.0)
-                    .frame(width: 100)
+            Button(action: viewModel.nextFrame) {
+                Image(systemName: "forward.frame.fill")
             }
+            .keyboardShortcut(.rightArrow, modifiers: [])
             
-            Divider()
+            Text("\(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
+                .monospacedDigit()
+                .frame(width: 80)
             
-            Menu {
-                ForEach(ImageEffect.allCases, id: \.self) { effect in
-                    Button(effect.rawValue) {
-                        selectedEffect = effect
-                    }
-                }
-            } label: {
-                Image(systemName: "wand.and.stars")
-                    .font(.title2)
+            Picker("Efekt", selection: $viewModel.selectedEffect) {
+                Text("Normal").tag(Optional<String>.none)
+                Text("Siyah Beyaz").tag(Optional("blackAndWhite"))
+                Text("Sepya").tag(Optional("sepia"))
+                Text("Negatif").tag(Optional("negative"))
             }
-            .help("Efektler")
+            .frame(width: 120)
+            
+            Button(action: { viewModel.toggleInfo() }) {
+                Image(systemName: "info.circle")
+                    .symbolVariant(viewModel.showInfo ? .fill : .none)
+            }
+            .keyboardShortcut("i", modifiers: [])
         }
+        .buttonStyle(.bordered)
+        .controlSize(.large)
         .padding()
-        .background(VisualEffectView())
+        .background {
+            RoundedRectangle(cornerRadius: 10)
+                .fill(Color(.windowBackgroundColor).opacity(0.95))
+                .shadow(radius: 5)
+        }
     }
-}
-
-struct VisualEffectView: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.blendingMode = .behindWindow
-        view.state = .active
-        view.material = .hudWindow
-        return view
-    }
-    
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 } 

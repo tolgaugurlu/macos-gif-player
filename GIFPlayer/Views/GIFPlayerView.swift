@@ -1,76 +1,191 @@
 import SwiftUI
-import WebKit
+import AppKit
+import ImageIO
+import CoreGraphics
+import UniformTypeIdentifiers
 
 struct GIFPlayerView: NSViewRepresentable {
     let url: URL
-    let effect: ImageEffect
-    @Binding var isPlaying: Bool
-    @Binding var playbackSpeed: Double
+    @ObservedObject var viewModel: GIFPlayerViewModel
     
-    func makeNSView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        webView.setValue(false, forKey: "drawsBackground")
-        return webView
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.clear.cgColor
+        
+        // Ana layer'ı oluştur
+        let containerLayer = CALayer()
+        containerLayer.frame = view.bounds
+        view.layer = containerLayer
+        
+        return view
     }
     
-    func updateNSView(_ webView: WKWebView, context: Context) {
-        let playbackSpeedJS = isPlaying ? String(format: "%.2f", 1.0 / playbackSpeed) : "0"
-        let html = """
-        <html>
-        <head>
-            <style>
-                body { margin: 0; background-color: transparent; }
-                img { width: 100%; height: 100%; object-fit: contain; \(effect.cssFilter) }
-            </style>
-            <script>
-                function updatePlaybackSpeed(speed) {
-                    const img = document.querySelector('img');
-                    if (speed === 0) {
-                        img.style.animationPlayState = 'paused';
-                    } else {
-                        img.style.animationDuration = speed + 's';
-                        img.style.animationPlayState = 'running';
+    func updateNSView(_ nsView: NSView, context: Context) {
+        // Dosya erişim izinlerini kontrol et
+        let securityScope = url.startAccessingSecurityScopedResource()
+        defer {
+            if securityScope {
+                url.stopAccessingSecurityScopedResource()
+            }
+        }
+        
+        guard let _ = try? url.checkResourceIsReachable() else {
+            print("Hata: GIF dosyasına erişilemiyor: \(url.path)")
+            return
+        }
+        
+        // View boyutunu güncelle
+        nsView.frame = NSRect(x: 0, y: 0, width: 800, height: 600)
+        nsView.layer?.frame = nsView.bounds
+        
+        // Eğer zaten bir animasyon varsa ve URL aynıysa, tekrar yükleme
+        if let currentURL = context.coordinator.currentURL, currentURL == url {
+            return
+        }
+        
+        // Önceki animasyonu temizle
+        context.coordinator.clearAnimation(from: nsView)
+        
+        // Yeni animasyonu yükle
+        context.coordinator.loadAnimation(from: url, into: nsView, viewModel: viewModel)
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator {
+        var gifPlayerView: GIFPlayerView
+        var currentURL: URL?
+        var displayLink: CVDisplayLink?
+        var imageSource: CGImageSource?
+        var frameCount: Int = 0
+        var currentFrame: Int = 0
+        var frameDurations: [TimeInterval] = []
+        var lastFrameTime: TimeInterval = 0
+        var imageLayer: CALayer?
+        
+        init(_ gifPlayerView: GIFPlayerView) {
+            self.gifPlayerView = gifPlayerView
+        }
+        
+        func clearAnimation(from view: NSView) {
+            imageLayer?.removeFromSuperlayer()
+            imageLayer = nil
+            imageSource = nil
+            currentURL = nil
+            frameDurations.removeAll()
+            currentFrame = 0
+            
+            if let displayLink = displayLink {
+                CVDisplayLinkStop(displayLink)
+                self.displayLink = nil
+            }
+        }
+        
+        func loadAnimation(from url: URL, into view: NSView, viewModel: GIFPlayerViewModel) {
+            let options = [kCGImageSourceShouldCache: true] as CFDictionary
+            guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, options) else {
+                print("Hata: GIF kaynağı oluşturulamadı")
+                return
+            }
+            
+            self.imageSource = imageSource
+            self.currentURL = url
+            self.frameCount = CGImageSourceGetCount(imageSource)
+            
+            // Frame sürelerini hesapla
+            frameDurations = (0..<frameCount).map { index in
+                let frameProperties = CGImageSourceCopyPropertiesAtIndex(imageSource, index, nil) as? [String: Any]
+                let gifProperties = frameProperties?[kCGImagePropertyGIFDictionary as String] as? [String: Any]
+                let defaultDuration = 0.1
+                
+                if let delay = gifProperties?[kCGImagePropertyGIFUnclampedDelayTime as String] as? Double,
+                   delay > 0 {
+                    return delay
+                } else if let delay = gifProperties?[kCGImagePropertyGIFDelayTime as String] as? Double,
+                          delay > 0 {
+                    return delay
+                }
+                return defaultDuration
+            }
+            
+            // Layer'ı hazırla
+            let layer = CALayer()
+            layer.frame = view.bounds
+            layer.contentsGravity = .resizeAspect
+            layer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
+            view.layer?.addSublayer(layer)
+            self.imageLayer = layer
+            
+            // İlk kareyi göster
+            if let firstImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) {
+                DispatchQueue.main.async {
+                    layer.contents = firstImage
+                    
+                    // Layer boyutunu GIF boyutuna göre ayarla
+                    let imageSize = CGSize(width: CGFloat(firstImage.width), height: CGFloat(firstImage.height))
+                    let viewSize = view.bounds.size
+                    let scale = min(viewSize.width / imageSize.width, viewSize.height / imageSize.height)
+                    let newSize = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
+                    let newOrigin = CGPoint(
+                        x: (viewSize.width - newSize.width) / 2,
+                        y: (viewSize.height - newSize.height) / 2
+                    )
+                    layer.frame = CGRect(origin: newOrigin, size: newSize)
+                }
+            }
+            
+            // Display link oluştur
+            var displayLink: CVDisplayLink?
+            CVDisplayLinkCreateWithActiveCGDisplays(&displayLink)
+            self.displayLink = displayLink
+            
+            let callback: CVDisplayLinkOutputCallback = { _, _, _, _, _, userData in
+                let coordinator = Unmanaged<Coordinator>.fromOpaque(userData!).takeUnretainedValue()
+                coordinator.updateAnimation()
+                return kCVReturnSuccess
+            }
+            
+            let userInfo = Unmanaged.passUnretained(self).toOpaque()
+            CVDisplayLinkSetOutputCallback(displayLink!, callback, userInfo)
+            
+            // Animasyonu başlat
+            CVDisplayLinkStart(displayLink!)
+            
+            // ViewModel'i güncelle
+            DispatchQueue.main.async {
+                viewModel.totalFrames = self.frameCount
+            }
+        }
+        
+        func updateAnimation() {
+            guard let imageSource = imageSource,
+                  frameCount > 0,
+                  let layer = imageLayer,
+                  gifPlayerView.viewModel.isPlaying else {
+                return
+            }
+            
+            let currentTime = CACurrentMediaTime()
+            if currentTime - lastFrameTime >= frameDurations[currentFrame] {
+                if let cgImage = CGImageSourceCreateImageAtIndex(imageSource, currentFrame, nil) {
+                    DispatchQueue.main.async {
+                        layer.contents = cgImage
+                        self.gifPlayerView.viewModel.currentFrame = self.currentFrame
                     }
                 }
-            </script>
-        </head>
-        <body>
-            <img src="\(url.path)" style="animation: playGif \(playbackSpeedJS)s steps(1) infinite;">
-            <script>
-                updatePlaybackSpeed('\(playbackSpeedJS)');
-            </script>
-        </body>
-        </html>
-        """
-        webView.loadHTMLString(html, baseURL: nil)
+                
+                currentFrame = (currentFrame + 1) % frameCount
+                lastFrameTime = currentTime
+            }
+        }
     }
 }
 
-enum ImageEffect: String, CaseIterable {
-    case none = "Normal"
-    case grayscale = "Siyah-Beyaz"
-    case sepia = "Sepya"
-    case blur = "Bulanık"
-    case brightness = "Parlak"
-    case invert = "Negatif"
-    case saturate = "Canlı"
-    
-    var cssFilter: String {
-        switch self {
-        case .none:
-            return ""
-        case .grayscale:
-            return "filter: grayscale(100%);"
-        case .sepia:
-            return "filter: sepia(100%);"
-        case .blur:
-            return "filter: blur(2px);"
-        case .brightness:
-            return "filter: brightness(150%);"
-        case .invert:
-            return "filter: invert(100%);"
-        case .saturate:
-            return "filter: saturate(200%);"
-        }
+extension GIFPlayerView {
+    static func dismantleNSView(_ nsView: NSView, coordinator: Coordinator) {
+        coordinator.clearAnimation(from: nsView)
     }
 } 

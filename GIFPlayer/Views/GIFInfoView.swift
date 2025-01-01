@@ -1,80 +1,55 @@
 import SwiftUI
 
 struct GIFInfoView: View {
-    let gifInfo: GIFInfo
+    let info: GIFInfo
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("GIF Bilgileri")
-                .font(.title2)
-                .bold()
-            
-            InfoGroup(title: "Dosya Bilgileri") {
-                InfoRow(label: "Boyut", value: gifInfo.fileSizeFormatted)
-                InfoRow(label: "Oluşturulma", value: gifInfo.creationDateFormatted)
-                InfoRow(label: "Değiştirilme", value: gifInfo.modificationDateFormatted)
-            }
-            
-            InfoGroup(title: "Görüntü Bilgileri") {
-                InfoRow(label: "Boyutlar", value: gifInfo.dimensionsFormatted)
-                InfoRow(label: "Kare Sayısı", value: "\(gifInfo.frameCount)")
-                InfoRow(label: "Kare Hızı", value: gifInfo.frameRateFormatted)
-                InfoRow(label: "Süre", value: gifInfo.durationFormatted)
-                InfoRow(label: "Döngü", value: gifInfo.loopCount == 0 ? "Sonsuz" : "\(gifInfo.loopCount)")
-            }
-        }
-        .padding()
-        .frame(width: 300)
-        .background(Color(NSColor.windowBackgroundColor))
-    }
-}
-
-struct InfoGroup<Content: View>: View {
-    let title: String
-    let content: Content
-    
-    init(title: String, @ViewBuilder content: () -> Content) {
-        self.title = title
-        self.content = content()
+    private func formatFileSize(_ size: Int64) -> String {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useBytes, .useKB, .useMB]
+        formatter.countStyle = .file
+        return formatter.string(fromByteCount: size)
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
+            Text("GIF Bilgileri")
                 .font(.headline)
-                .foregroundColor(.secondary)
             
-            content
-                .padding(.leading, 8)
+            Group {
+                HStack {
+                    Text("Boyut:")
+                    Text(formatFileSize(info.fileSize))
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Çözünürlük:")
+                    Text("\(Int(info.dimensions.width))×\(Int(info.dimensions.height))")
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Kare Sayısı:")
+                    Text("\(info.frameCount)")
+                        .foregroundColor(.secondary)
+                }
+                
+                HStack {
+                    Text("Süre:")
+                    Text(String(format: "%.2f saniye", info.duration))
+                        .foregroundColor(.secondary)
+                }
+            }
+            .font(.subheadline)
         }
-    }
-}
-
-struct InfoRow: View {
-    let label: String
-    let value: String
-    
-    var body: some View {
-        HStack {
-            Text(label)
-                .foregroundColor(.secondary)
-            Spacer()
-            Text(value)
-                .foregroundColor(.primary)
-        }
-        .font(.system(.body, design: .monospaced))
+        .padding()
     }
 }
 
 #Preview {
-    GIFInfoView(gifInfo: GIFInfo(
-        fileSize: 1024 * 1024,
-        dimensions: CGSize(width: 800, height: 600),
-        frameCount: 24,
-        duration: 2.4,
-        creationDate: Date(),
-        modificationDate: Date(),
-        loopCount: 0,
-        averageFrameDelay: 0.1
-    ))
+    if let info = GIFInfo(url: Bundle.main.url(forResource: "sample", withExtension: "gif") ?? URL(fileURLWithPath: "")) {
+        GIFInfoView(info: info)
+    } else {
+        Text("Önizleme için GIF yüklenemedi")
+    }
 } 

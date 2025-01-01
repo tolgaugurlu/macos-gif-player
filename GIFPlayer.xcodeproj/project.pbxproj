@@ -1,296 +1,366 @@
 // !$*UTF8*$!
 {
-    archiveVersion = 1;
-    classes = {
-    };
-    objectVersion = 56;
-    objects = {
-        /* Begin PBXBuildFile section */
-        13B07F8C1A680F5B00A75B9A /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B07F861A680F5B00A75B9A /* App.swift */; };
-        13B07F8E1A680F5B00A75B9A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B07F871A680F5B00A75B9A /* ContentView.swift */; };
-        /* End PBXBuildFile section */
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
 
-        /* Begin PBXFileReference section */
-        13B07F861A680F5B00A75B9A /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-        13B07F871A680F5B00A75B9A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-        13B07F931A680F5B00A75B9A /* GIFPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIFPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
-        /* End PBXFileReference section */
+/* Begin PBXBuildFile section */
+		010928E8C7A80CC14303D112 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 318181B67F1EF1DD4B94962F /* LoadingView.swift */; };
+		029C7145CAF153B13D61687C /* GIFInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A6481CEA04A8871F85A74D /* GIFInfoView.swift */; };
+		1D15B5A6CBD4A7FFDA1ADF5E /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3A402FC9F5FBDCF5E325DA /* App.swift */; };
+		2C5A7BFEC7EDD081B847B84E /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6ADF2E314512F5051F6864 /* ThemeSettings.swift */; };
+		40F539031E185E50040FDFA5 /* GIFPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5EFBEC6AC314F94B814A4 /* GIFPlayerView.swift */; };
+		5CB2F99B6EA7B671B01C51AE /* GIFPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2060D93FA5E8D89892D950CB /* GIFPlayerViewModel.swift */; };
+		798F9EE176624DFD292E597D /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30CD36415A5C95262E21DFC /* AppIcon.swift */; };
+		8218BDC8912471FCD7348AD4 /* GIFInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A7F7E90EEE8860F17742EF /* GIFInfo.swift */; };
+		8D4B1E007FEEFB220121D712 /* KeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C0B2BC1CA6F9C0E94F5FF2 /* KeyboardShortcuts.swift */; };
+		BA80493F326F05C39D852FEB /* GIFCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DED7895586847383280C458 /* GIFCache.swift */; };
+		D7E3DA00941333BE1D53911F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C4331EDD7D18F2AAFB4155 /* ContentView.swift */; };
+		E6B0B2203ACEB5747D85D8FA /* ControlPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F013E543B9443D52AB15285 /* ControlPanelView.swift */; };
+		FC64A9F816A30BD499F566DF /* ThemePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D2432FB8B7D2DD1D40AF3 /* ThemePickerView.swift */; };
+/* End PBXBuildFile section */
 
-        /* Begin PBXFrameworksBuildPhase section */
-        13B07F8E1A680F5B00A75B9A /* Frameworks */ = {
-            isa = PBXFrameworksBuildPhase;
-            buildActionMask = 2147483647;
-            files = (
-            );
-            runOnlyForDeploymentPostprocessing = 0;
-        };
-        /* End PBXFrameworksBuildPhase section */
+/* Begin PBXFileReference section */
+		18C0B2BC1CA6F9C0E94F5FF2 /* KeyboardShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcuts.swift; sourceTree = "<group>"; };
+		1DED7895586847383280C458 /* GIFCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFCache.swift; sourceTree = "<group>"; };
+		2060D93FA5E8D89892D950CB /* GIFPlayerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFPlayerViewModel.swift; sourceTree = "<group>"; };
+		22C4331EDD7D18F2AAFB4155 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		28B5EFBEC6AC314F94B814A4 /* GIFPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFPlayerView.swift; sourceTree = "<group>"; };
+		2F013E543B9443D52AB15285 /* ControlPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlPanelView.swift; sourceTree = "<group>"; };
+		312358B9D5A461AED2089F7F /* GIFPlayer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GIFPlayer.entitlements; sourceTree = "<group>"; };
+		318181B67F1EF1DD4B94962F /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		3CA3927371EE8031D884182F /* GIFPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GIFPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		435D2432FB8B7D2DD1D40AF3 /* ThemePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerView.swift; sourceTree = "<group>"; };
+		5F6ADF2E314512F5051F6864 /* ThemeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettings.swift; sourceTree = "<group>"; };
+		B0A6481CEA04A8871F85A74D /* GIFInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFInfoView.swift; sourceTree = "<group>"; };
+		B14EFCD81CB2DE183C127ABE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CE3A402FC9F5FBDCF5E325DA /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		D30CD36415A5C95262E21DFC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
+		F7A7F7E90EEE8860F17742EF /* GIFInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFInfo.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
-        /* Begin PBXGroup section */
-        13B07F7C1A680F5B00A75B9A = {
-            isa = PBXGroup;
-            children = (
-                13B07F861A680F5B00A75B9A /* App.swift */,
-                13B07F871A680F5B00A75B9A /* ContentView.swift */,
-                13B07F931A680F5B00A75B9A /* GIFPlayer.app */,
-            );
-            sourceTree = "<group>";
-        };
-        /* End PBXGroup section */
+/* Begin PBXGroup section */
+		1187E84B29EA3E2E708D88C9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3CA3927371EE8031D884182F /* GIFPlayer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1CB43078D09E8150636515A3 = {
+			isa = PBXGroup;
+			children = (
+				97D711287AD6B6878FE90DE2 /* GIFPlayer */,
+				1187E84B29EA3E2E708D88C9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1CD4EAA4831CC059C0E2E810 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D30CD36415A5C95262E21DFC /* AppIcon.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		273B77D4C469C010D259B07B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1DED7895586847383280C458 /* GIFCache.swift */,
+				F7A7F7E90EEE8860F17742EF /* GIFInfo.swift */,
+				18C0B2BC1CA6F9C0E94F5FF2 /* KeyboardShortcuts.swift */,
+				5F6ADF2E314512F5051F6864 /* ThemeSettings.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		297A90A476FC1246FD19EC2A /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2060D93FA5E8D89892D950CB /* GIFPlayerViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		91A257DB8520D21A6DAF04EF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				22C4331EDD7D18F2AAFB4155 /* ContentView.swift */,
+				2F013E543B9443D52AB15285 /* ControlPanelView.swift */,
+				B0A6481CEA04A8871F85A74D /* GIFInfoView.swift */,
+				28B5EFBEC6AC314F94B814A4 /* GIFPlayerView.swift */,
+				318181B67F1EF1DD4B94962F /* LoadingView.swift */,
+				435D2432FB8B7D2DD1D40AF3 /* ThemePickerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		97D711287AD6B6878FE90DE2 /* GIFPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				CE3A402FC9F5FBDCF5E325DA /* App.swift */,
+				312358B9D5A461AED2089F7F /* GIFPlayer.entitlements */,
+				B14EFCD81CB2DE183C127ABE /* Info.plist */,
+				273B77D4C469C010D259B07B /* Models */,
+				1CD4EAA4831CC059C0E2E810 /* Resources */,
+				297A90A476FC1246FD19EC2A /* ViewModels */,
+				91A257DB8520D21A6DAF04EF /* Views */,
+			);
+			path = GIFPlayer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
 
-        /* Begin PBXNativeTarget section */
-        13B07F861A680F5B00A75B9A /* GIFPlayer */ = {
-            isa = PBXNativeTarget;
-            buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GIFPlayer" */;
-            buildPhases = (
-                13B07F8C1A680F5B00A75B9A /* Sources */,
-                13B07F8E1A680F5B00A75B9A /* Frameworks */,
-            );
-            buildRules = (
-            );
-            dependencies = (
-            );
-            name = GIFPlayer;
-            productName = GIFPlayer;
-            productReference = 13B07F931A680F5B00A75B9A /* GIFPlayer.app */;
-            productType = "com.apple.product-type.application";
-        };
-        /* End PBXNativeTarget section */
+/* Begin PBXNativeTarget section */
+		58D9BF902FD1010BED409F46 /* GIFPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1173F88DE3DD47C8A4EDA3BE /* Build configuration list for PBXNativeTarget "GIFPlayer" */;
+			buildPhases = (
+				6B68761B494DC1A87C21005E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GIFPlayer;
+			productName = GIFPlayer;
+			productReference = 3CA3927371EE8031D884182F /* GIFPlayer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
 
-        /* Begin PBXProject section */
-        13B07F7C1A680F5B00A75B9B = {
-            isa = PBXProject;
-            attributes = {
-                LastUpgradeCheck = 1500;
-                ORGANIZATIONNAME = "Tolga Uğurlu";
-                TargetAttributes = {
-                    13B07F861A680F5B00A75B9A = {
-                        CreatedOnToolsVersion = 15.0;
-                    };
-                };
-            };
-            buildConfigurationList = 13B07F931A680F5B00A75B9C /* Build configuration list for PBXProject "GIFPlayer" */;
-            compatibilityVersion = "Xcode 14.0";
-            developmentRegion = en;
-            hasScannedForEncodings = 0;
-            knownRegions = (
-                en,
-                Base,
-            );
-            mainGroup = 13B07F7C1A680F5B00A75B9A;
-            productRefGroup = 13B07F7C1A680F5B00A75B9A;
-            projectDirPath = "";
-            projectRoot = "";
-            targets = (
-                13B07F861A680F5B00A75B9A /* GIFPlayer */,
-            );
-        };
-        /* End PBXProject section */
+/* Begin PBXProject section */
+		13C25A8552556C6D6017A37B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = F3A35DF69C8A1969D745C381 /* Build configuration list for PBXProject "GIFPlayer" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 1CB43078D09E8150636515A3;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				58D9BF902FD1010BED409F46 /* GIFPlayer */,
+			);
+		};
+/* End PBXProject section */
 
-        /* Begin PBXSourcesBuildPhase section */
-        13B07F8C1A680F5B00A75B9A /* Sources */ = {
-            isa = PBXSourcesBuildPhase;
-            buildActionMask = 2147483647;
-            files = (
-                13B07F8C1A680F5B00A75B9A /* App.swift in Sources */,
-                13B07F8E1A680F5B00A75B9A /* ContentView.swift in Sources */,
-            );
-            runOnlyForDeploymentPostprocessing = 0;
-        };
-        /* End PBXSourcesBuildPhase section */
+/* Begin PBXSourcesBuildPhase section */
+		6B68761B494DC1A87C21005E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D15B5A6CBD4A7FFDA1ADF5E /* App.swift in Sources */,
+				798F9EE176624DFD292E597D /* AppIcon.swift in Sources */,
+				D7E3DA00941333BE1D53911F /* ContentView.swift in Sources */,
+				E6B0B2203ACEB5747D85D8FA /* ControlPanelView.swift in Sources */,
+				BA80493F326F05C39D852FEB /* GIFCache.swift in Sources */,
+				8218BDC8912471FCD7348AD4 /* GIFInfo.swift in Sources */,
+				029C7145CAF153B13D61687C /* GIFInfoView.swift in Sources */,
+				40F539031E185E50040FDFA5 /* GIFPlayerView.swift in Sources */,
+				5CB2F99B6EA7B671B01C51AE /* GIFPlayerViewModel.swift in Sources */,
+				8D4B1E007FEEFB220121D712 /* KeyboardShortcuts.swift in Sources */,
+				010928E8C7A80CC14303D112 /* LoadingView.swift in Sources */,
+				FC64A9F816A30BD499F566DF /* ThemePickerView.swift in Sources */,
+				2C5A7BFEC7EDD081B847B84E /* ThemeSettings.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
 
-        /* Begin XCBuildConfiguration section */
-        13B07F941A680F5B00A75B9A /* Debug */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ALWAYS_SEARCH_USER_PATHS = NO;
-                CLANG_ANALYZER_NONNULL = YES;
-                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-                CLANG_ENABLE_MODULES = YES;
-                CLANG_ENABLE_OBJC_ARC = YES;
-                CLANG_ENABLE_OBJC_WEAK = YES;
-                CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-                CLANG_WARN_BOOL_CONVERSION = YES;
-                CLANG_WARN_COMMA = YES;
-                CLANG_WARN_CONSTANT_CONVERSION = YES;
-                CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-                CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-                CLANG_WARN_EMPTY_BODY = YES;
-                CLANG_WARN_ENUM_CONVERSION = YES;
-                CLANG_WARN_INFINITE_RECURSION = YES;
-                CLANG_WARN_INT_CONVERSION = YES;
-                CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-                CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-                CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-                CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-                CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-                CLANG_WARN_STRICT_PROTOTYPES = YES;
-                CLANG_WARN_SUSPICIOUS_MOVE = YES;
-                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-                CLANG_WARN_UNREACHABLE_CODE = YES;
-                CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-                COPY_PHASE_STRIP = NO;
-                DEBUG_INFORMATION_FORMAT = dwarf;
-                ENABLE_STRICT_OBJC_MSGSEND = YES;
-                ENABLE_TESTABILITY = YES;
-                GCC_C_LANGUAGE_STANDARD = gnu11;
-                GCC_DYNAMIC_NO_PIC = NO;
-                GCC_NO_COMMON_BLOCKS = YES;
-                GCC_OPTIMIZATION_LEVEL = 0;
-                GCC_PREPROCESSOR_DEFINITIONS = (
-                    "DEBUG=1",
-                    "$(inherited)",
-                );
-                GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-                GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-                GCC_WARN_UNDECLARED_SELECTOR = YES;
-                GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-                GCC_WARN_UNUSED_FUNCTION = YES;
-                GCC_WARN_UNUSED_VARIABLE = YES;
-                MACOSX_DEPLOYMENT_TARGET = 14.0;
-                MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-                MTL_FAST_MATH = YES;
-                ONLY_ACTIVE_ARCH = YES;
-                SDKROOT = macosx;
-                SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-                SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-            };
-            name = Debug;
-        };
-        13B07F951A680F5B00A75B9A /* Release */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ALWAYS_SEARCH_USER_PATHS = NO;
-                CLANG_ANALYZER_NONNULL = YES;
-                CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-                CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-                CLANG_ENABLE_MODULES = YES;
-                CLANG_ENABLE_OBJC_ARC = YES;
-                CLANG_ENABLE_OBJC_WEAK = YES;
-                CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-                CLANG_WARN_BOOL_CONVERSION = YES;
-                CLANG_WARN_COMMA = YES;
-                CLANG_WARN_CONSTANT_CONVERSION = YES;
-                CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-                CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-                CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-                CLANG_WARN_EMPTY_BODY = YES;
-                CLANG_WARN_ENUM_CONVERSION = YES;
-                CLANG_WARN_INFINITE_RECURSION = YES;
-                CLANG_WARN_INT_CONVERSION = YES;
-                CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-                CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-                CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-                CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-                CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-                CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-                CLANG_WARN_STRICT_PROTOTYPES = YES;
-                CLANG_WARN_SUSPICIOUS_MOVE = YES;
-                CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-                CLANG_WARN_UNREACHABLE_CODE = YES;
-                CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-                COPY_PHASE_STRIP = NO;
-                DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-                ENABLE_NS_ASSERTIONS = NO;
-                ENABLE_STRICT_OBJC_MSGSEND = YES;
-                GCC_C_LANGUAGE_STANDARD = gnu11;
-                GCC_NO_COMMON_BLOCKS = YES;
-                GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-                GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-                GCC_WARN_UNDECLARED_SELECTOR = YES;
-                GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-                GCC_WARN_UNUSED_FUNCTION = YES;
-                GCC_WARN_UNUSED_VARIABLE = YES;
-                MACOSX_DEPLOYMENT_TARGET = 14.0;
-                MTL_ENABLE_DEBUG_INFO = NO;
-                MTL_FAST_MATH = YES;
-                SDKROOT = macosx;
-                SWIFT_COMPILATION_MODE = wholemodule;
-                SWIFT_OPTIMIZATION_LEVEL = "-O";
-            };
-            name = Release;
-        };
-        13B07F961A680F5B00A75B9A /* Debug */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-                ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-                CODE_SIGN_STYLE = Automatic;
-                COMBINE_HIDPI_IMAGES = YES;
-                CURRENT_PROJECT_VERSION = 1;
-                DEVELOPMENT_ASSET_PATHS = "";
-                ENABLE_PREVIEWS = YES;
-                GENERATE_INFOPLIST_FILE = YES;
-                INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Tolga Uğurlu. Tüm hakları saklıdır.";
-                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-                INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-                INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-                LD_RUNPATH_SEARCH_PATHS = (
-                    "$(inherited)",
-                    "@executable_path/../Frameworks",
-                );
-                MARKETING_VERSION = 1.0;
-                PRODUCT_BUNDLE_IDENTIFIER = "com.tolgaugurlu.gifplayer";
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SWIFT_EMIT_LOC_STRINGS = YES;
-                SWIFT_VERSION = 5.0;
-                TARGETED_DEVICE_FAMILY = "1,2";
-            };
-            name = Debug;
-        };
-        13B07F971A680F5B00A75B9A /* Release */ = {
-            isa = XCBuildConfiguration;
-            buildSettings = {
-                ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-                ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-                CODE_SIGN_STYLE = Automatic;
-                COMBINE_HIDPI_IMAGES = YES;
-                CURRENT_PROJECT_VERSION = 1;
-                DEVELOPMENT_ASSET_PATHS = "";
-                ENABLE_PREVIEWS = YES;
-                GENERATE_INFOPLIST_FILE = YES;
-                INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Tolga Uğurlu. Tüm hakları saklıdır.";
-                INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-                INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-                INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-                LD_RUNPATH_SEARCH_PATHS = (
-                    "$(inherited)",
-                    "@executable_path/../Frameworks",
-                );
-                MARKETING_VERSION = 1.0;
-                PRODUCT_BUNDLE_IDENTIFIER = "com.tolgaugurlu.gifplayer";
-                PRODUCT_NAME = "$(TARGET_NAME)";
-                SWIFT_EMIT_LOC_STRINGS = YES;
-                SWIFT_VERSION = 5.0;
-                TARGETED_DEVICE_FAMILY = "1,2";
-            };
-            name = Release;
-        };
-        /* End XCBuildConfiguration section */
+/* Begin XCBuildConfiguration section */
+		35529EC29F19F8C0C8029204 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIFPlayer/GIFPlayer.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GIFPlayer/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Tolga Uğurlu. Tüm hakları saklıdır.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tolgaugurlu.gifplayer;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		7CF41450974C372EC62D3DDF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8B54898A90BC43ED1819890F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B1E5CD03135E5DB5AC7C20AB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = GIFPlayer/GIFPlayer.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GIFPlayer/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2024 Tolga Uğurlu. Tüm hakları saklıdır.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tolgaugurlu.gifplayer;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
 
-        /* Begin XCConfigurationList section */
-        13B07F931A680F5B00A75B9C /* Build configuration list for PBXProject "GIFPlayer" */ = {
-            isa = XCConfigurationList;
-            buildConfigurations = (
-                13B07F941A680F5B00A75B9A /* Debug */,
-                13B07F951A680F5B00A75B9A /* Release */,
-            );
-            defaultConfigurationIsVisible = 0;
-            defaultConfigurationName = Release;
-        };
-        13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "GIFPlayer" */ = {
-            isa = XCConfigurationList;
-            buildConfigurations = (
-                13B07F961A680F5B00A75B9A /* Debug */,
-                13B07F971A680F5B00A75B9A /* Release */,
-            );
-            defaultConfigurationIsVisible = 0;
-            defaultConfigurationName = Release;
-        };
-        /* End XCConfigurationList section */
-    };
-    rootObject = 13B07F7C1A680F5B00A75B9B /* Project object */;
+/* Begin XCConfigurationList section */
+		1173F88DE3DD47C8A4EDA3BE /* Build configuration list for PBXNativeTarget "GIFPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35529EC29F19F8C0C8029204 /* Debug */,
+				B1E5CD03135E5DB5AC7C20AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F3A35DF69C8A1969D745C381 /* Build configuration list for PBXProject "GIFPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7CF41450974C372EC62D3DDF /* Debug */,
+				8B54898A90BC43ED1819890F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 13C25A8552556C6D6017A37B /* Project object */;
 }

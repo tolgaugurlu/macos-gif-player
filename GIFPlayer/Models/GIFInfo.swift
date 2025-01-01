@@ -1,53 +1,49 @@
 import Foundation
+import ImageIO
+import CoreGraphics
 
 struct GIFInfo {
     let fileSize: Int64
     let dimensions: CGSize
     let frameCount: Int
     let duration: Double
-    let creationDate: Date?
-    let modificationDate: Date?
-    let loopCount: Int
-    let averageFrameDelay: Double
     
-    var fileSizeFormatted: String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useKB, .useMB]
-        formatter.countStyle = .file
-        return formatter.string(fromByteCount: fileSize)
+    init?(url: URL) {
+        guard let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+            return nil
+        }
+        
+        let properties = CGImageSourceCopyProperties(source, nil) as? [String: Any]
+        let gifProperties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [String: Any]
+        
+        // Dosya boyutu
+        let fileAttributes = try? FileManager.default.attributesOfItem(atPath: url.path)
+        fileSize = fileAttributes?[.size] as? Int64 ?? 0
+        
+        // Boyutlar
+        if let width = gifProperties?[kCGImagePropertyPixelWidth as String] as? Double,
+           let height = gifProperties?[kCGImagePropertyPixelHeight as String] as? Double {
+            dimensions = CGSize(width: width, height: height)
+        } else {
+            dimensions = .zero
+        }
+        
+        // Kare sayısı
+        frameCount = CGImageSourceGetCount(source)
+        
+        // Süre
+        if let gifDict = gifProperties?[kCGImagePropertyGIFDictionary as String] as? [String: Any],
+           let duration = gifDict[kCGImagePropertyGIFDelayTime as String] as? Double {
+            self.duration = duration * Double(frameCount)
+        } else {
+            duration = 0
+        }
     }
     
-    var dimensionsFormatted: String {
-        return String(format: "%.0f x %.0f", dimensions.width, dimensions.height)
-    }
-    
-    var durationFormatted: String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.unitsStyle = .abbreviated
-        return formatter.string(from: duration) ?? "Bilinmiyor"
-    }
-    
-    var creationDateFormatted: String {
-        guard let date = creationDate else { return "Bilinmiyor" }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.locale = Locale(identifier: "tr_TR")
-        return formatter.string(from: date)
-    }
-    
-    var modificationDateFormatted: String {
-        guard let date = modificationDate else { return "Bilinmiyor" }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        formatter.locale = Locale(identifier: "tr_TR")
-        return formatter.string(from: date)
-    }
-    
-    var frameRateFormatted: String {
-        let frameRate = 1.0 / averageFrameDelay
-        return String(format: "%.1f FPS", frameRate)
+    func formattedFileSize() -> String {
+        let byteCountFormatter = ByteCountFormatter()
+        byteCountFormatter.allowedUnits = [.useBytes, .useKB, .useMB]
+        byteCountFormatter.countStyle = .file
+        return byteCountFormatter.string(fromByteCount: fileSize)
     }
 } 
