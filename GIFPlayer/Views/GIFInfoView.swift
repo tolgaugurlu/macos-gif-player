@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GIFInfoView: View {
     let info: GIFInfo
+    @Environment(\.dismiss) private var dismiss
     
     private func formatFileSize(_ size: Int64) -> String {
         let formatter = ByteCountFormatter()
@@ -12,8 +13,17 @@ struct GIFInfoView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("GIF Bilgileri")
-                .font(.headline)
+            HStack {
+                Text("GIF Bilgileri")
+                    .font(.headline)
+                Spacer()
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(.gray)
+                }
+                .buttonStyle(.plain)
+            }
+            .padding(.bottom, 5)
             
             Group {
                 HStack {
@@ -41,8 +51,20 @@ struct GIFInfoView: View {
                 }
             }
             .font(.subheadline)
+            
+            Divider()
+                .padding(.vertical, 5)
+            
+            HStack {
+                Text("Geliştirici:")
+                Link("Tolga Uğurlu", destination: URL(string: "https://github.com/tolgaugurlu")!)
+                    .foregroundColor(.blue)
+            }
+            .font(.caption)
         }
         .padding()
+        .frame(width: 300)
+        .background(Color(NSColor.windowBackgroundColor))
     }
 }
 
