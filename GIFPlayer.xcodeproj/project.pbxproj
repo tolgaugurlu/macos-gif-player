@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		2C5A7BFEC7EDD081B847B84E /* ThemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6ADF2E314512F5051F6864 /* ThemeSettings.swift */; };
 		40F539031E185E50040FDFA5 /* GIFPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B5EFBEC6AC314F94B814A4 /* GIFPlayerView.swift */; };
 		5CB2F99B6EA7B671B01C51AE /* GIFPlayerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2060D93FA5E8D89892D950CB /* GIFPlayerViewModel.swift */; };
-		798F9EE176624DFD292E597D /* AppIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D30CD36415A5C95262E21DFC /* AppIcon.swift */; };
 		8218BDC8912471FCD7348AD4 /* GIFInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7A7F7E90EEE8860F17742EF /* GIFInfo.swift */; };
 		8D4B1E007FEEFB220121D712 /* KeyboardShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C0B2BC1CA6F9C0E94F5FF2 /* KeyboardShortcuts.swift */; };
 		BA80493F326F05C39D852FEB /* GIFCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DED7895586847383280C458 /* GIFCache.swift */; };
@@ -37,7 +36,6 @@
 		B0A6481CEA04A8871F85A74D /* GIFInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFInfoView.swift; sourceTree = "<group>"; };
 		B14EFCD81CB2DE183C127ABE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE3A402FC9F5FBDCF5E325DA /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		D30CD36415A5C95262E21DFC /* AppIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcon.swift; sourceTree = "<group>"; };
 		F7A7F7E90EEE8860F17742EF /* GIFInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GIFInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -61,7 +59,6 @@
 		1CD4EAA4831CC059C0E2E810 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D30CD36415A5C95262E21DFC /* AppIcon.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -138,8 +135,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = F3A35DF69C8A1969D745C381 /* Build configuration list for PBXProject "GIFPlayer" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -164,7 +159,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D15B5A6CBD4A7FFDA1ADF5E /* App.swift in Sources */,
-				798F9EE176624DFD292E597D /* AppIcon.swift in Sources */,
 				D7E3DA00941333BE1D53911F /* ContentView.swift in Sources */,
 				E6B0B2203ACEB5747D85D8FA /* ControlPanelView.swift in Sources */,
 				BA80493F326F05C39D852FEB /* GIFCache.swift in Sources */,
