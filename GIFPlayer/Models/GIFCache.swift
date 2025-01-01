@@ -1,10 +1,12 @@
 import Foundation
 import ImageIO
+import AppKit
 
 final class GIFCache {
     static let shared = GIFCache()
     private var cache = NSCache<NSURL, CGImageSource>()
     private var frameCache = NSCache<NSString, CGImage>()
+    private var frameKeys = Set<String>()
     
     private init() {
         // Önbellek boyut limitleri
@@ -13,7 +15,7 @@ final class GIFCache {
         
         // Bellek baskısı olduğunda otomatik temizleme
         NotificationCenter.default.addObserver(
-            forName: UIApplication.didReceiveMemoryWarningNotification,
+            forName: NSApplication.willTerminateNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
@@ -31,6 +33,7 @@ final class GIFCache {
     
     func cacheFrame(_ image: CGImage, for key: String) {
         frameCache.setObject(image, forKey: key as NSString)
+        frameKeys.insert(key)
     }
     
     func getCachedFrame(for key: String) -> CGImage? {
@@ -40,6 +43,7 @@ final class GIFCache {
     func clearCache() {
         cache.removeAllObjects()
         frameCache.removeAllObjects()
+        frameKeys.removeAll()
     }
     
     func removeCachedGIF(for url: URL) {
@@ -49,9 +53,10 @@ final class GIFCache {
     // Belirli bir GIF'in tüm karelerini önbellekten temizle
     func clearFrameCache(for url: URL) {
         let prefix = url.absoluteString
-        let allKeys = frameCache.allKeys()
-        for key in allKeys where key.hasPrefix(prefix) {
-            frameCache.removeObject(forKey: key)
+        let keysToRemove = frameKeys.filter { $0.hasPrefix(prefix) }
+        for key in keysToRemove {
+            frameCache.removeObject(forKey: key as NSString)
+            frameKeys.remove(key)
         }
     }
     
@@ -59,8 +64,8 @@ final class GIFCache {
     var statistics: String {
         """
         GIF Önbellek İstatistikleri:
-        - Önbellekteki GIF sayısı: \(cache.totalCount)
-        - Önbellekteki kare sayısı: \(frameCache.totalCount)
+        - Önbellekteki GIF sayısı: \(cache.name?.count ?? 0)
+        - Önbellekteki kare sayısı: \(frameKeys.count)
         """
     }
 } 

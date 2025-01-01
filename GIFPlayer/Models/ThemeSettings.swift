@@ -28,17 +28,19 @@ enum Theme: String, CaseIterable {
     }
 }
 
+@MainActor
 class ThemeSettings: ObservableObject {
     @AppStorage("selectedTheme") private var storedTheme: String = Theme.system.rawValue
-    
-    @Published var selectedTheme: Theme {
-        didSet {
-            storedTheme = selectedTheme.rawValue
-        }
-    }
+    @Published private(set) var selectedTheme: Theme
     
     init() {
-        self.selectedTheme = Theme(rawValue: storedTheme) ?? .system
+        selectedTheme = Theme(rawValue: Theme.system.rawValue) ?? .system
+        selectedTheme = Theme(rawValue: storedTheme) ?? .system
+    }
+    
+    func setTheme(_ theme: Theme) {
+        selectedTheme = theme
+        storedTheme = theme.rawValue
     }
     
     var isDarkMode: Bool {

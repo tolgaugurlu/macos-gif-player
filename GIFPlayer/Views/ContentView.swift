@@ -132,31 +132,31 @@ struct ContentView: View {
             }
         }
         // Klavye kısayolları
-        .onKeyPress(.space) { _ in
+        .onKeyPress(.space) {
             togglePlayback()
             return .handled
         }
-        .onKeyPress(.rightArrow) { _ in
+        .onKeyPress(.rightArrow) {
             viewModel.nextFrame()
             return .handled
         }
-        .onKeyPress(.leftArrow) { _ in
+        .onKeyPress(.leftArrow) {
             viewModel.previousFrame()
             return .handled
         }
-        .onKeyPress(.upArrow) { _ in
+        .onKeyPress(.upArrow) {
             playbackSpeed = min(playbackSpeed + 0.1, 2.0)
             return .handled
         }
-        .onKeyPress(.downArrow) { _ in
+        .onKeyPress(.downArrow) {
             playbackSpeed = max(playbackSpeed - 0.1, 0.1)
             return .handled
         }
-        .onKeyPress("l") { _ in
+        .onKeyPress("l") {
             viewModel.toggleLoop()
             return .handled
         }
-        .onKeyPress("i") { _ in
+        .onKeyPress("i") {
             if viewModel.gifInfo != nil {
                 showGIFInfo.toggle()
             }
