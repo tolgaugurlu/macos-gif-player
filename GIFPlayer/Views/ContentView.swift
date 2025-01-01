@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @StateObject private var viewModel = GIFPlayerViewModel()
+    @StateObject private var themeSettings = ThemeSettings()
     @State private var isPlaying = false
     @State private var playbackSpeed: Double = 1.0
     @State private var showEffectsMenu = false
@@ -32,19 +33,24 @@ struct ContentView: View {
                             .background(.ultraThinMaterial)
                             .cornerRadius(6)
                         
-                        // GIF bilgi butonu
-                        Button(action: { showGIFInfo.toggle() }) {
-                            Image(systemName: "info.circle")
-                                .font(.title2)
-                                .foregroundColor(.secondary)
+                        HStack(spacing: 8) {
+                            // GIF bilgi butonu
+                            Button(action: { showGIFInfo.toggle() }) {
+                                Image(systemName: "info.circle")
+                                    .font(.title2)
+                                    .foregroundColor(.secondary)
+                            }
+                            .buttonStyle(.plain)
+                            .help("GIF Bilgileri")
+                            .background(
+                                Circle()
+                                    .fill(.ultraThinMaterial)
+                                    .frame(width: 32, height: 32)
+                            )
+                            
+                            // Tema seçici
+                            ThemePickerView()
                         }
-                        .buttonStyle(.plain)
-                        .help("GIF Bilgileri")
-                        .background(
-                            Circle()
-                                .fill(.ultraThinMaterial)
-                                .frame(width: 32, height: 32)
-                        )
                     }
                     .padding(8)
                 }
@@ -73,6 +79,7 @@ struct ContentView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .preferredColorScheme(themeSettings.selectedTheme.colorScheme)
         .onChange(of: playbackSpeed) { newSpeed in
             viewModel.updatePlaybackSpeed(newSpeed)
         }
@@ -109,10 +116,12 @@ struct ContentView: View {
         )
         .sheet(isPresented: $showShortcutsHelp) {
             ShortcutsHelpView()
+                .environmentObject(themeSettings)
         }
         .sheet(isPresented: $showGIFInfo) {
             if let info = viewModel.gifInfo {
                 GIFInfoView(gifInfo: info)
+                    .environmentObject(themeSettings)
             }
         }
         // Klavye kısayolları
@@ -146,6 +155,7 @@ struct ContentView: View {
             }
             return .handled
         }
+        .environmentObject(themeSettings)
     }
     
     private func togglePlayback() {
