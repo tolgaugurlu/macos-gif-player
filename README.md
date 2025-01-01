@@ -1,5 +1,3 @@
-
-
 <div align="center">
   <h1>🎬 GIFPlayer</h1>
   <h3>Modern, Hızlı ve Kullanıcı Dostu GIF Oynatıcı</h3>
@@ -73,6 +71,15 @@ GIFPlayer, macOS için özel olarak tasarlanmış, modern ve kullanıcı dostu b
 1. [Releases](https://github.com/tolgaugurlu/macos-gif-player/releases) sayfasından son sürümü indirin
 2. DMG dosyasını açın
 3. GIFPlayer.app'i Applications klasörüne sürükleyin
+
+> ⚠️ **MacOS Güvenlik Uyarısı**
+> 
+> İlk kez açtığınızda MacOS bir güvenlik uyarısı gösterecektir. Bu normal bir durumdur ve uygulamanın henüz Apple tarafından onaylanmamış (notarize edilmemiş) olmasından kaynaklanır. Uygulamayı açmak için:
+> 1. Applications klasöründe GIFPlayer'a sağ tıklayın
+> 2. "Aç" (Open) seçeneğini tıklayın
+> 3. Açılan uyarı penceresinde tekrar "Aç" butonuna tıklayın
+> 
+> Bu işlemi sadece ilk açılışta yapmanız yeterlidir. Sonraki kullanımlarınızda uyarı gösterilmeyecektir.
 
 ### Kaynak Koddan Derleme
 1. Gereksinimler:
