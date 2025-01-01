@@ -14,71 +14,78 @@ struct ContentView: View {
     @State private var showGIFInfo = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            if let url = viewModel.selectedGIFURL {
-                ZStack(alignment: .topTrailing) {
-                    GIFPlayerView(
-                        url: url,
-                        effect: selectedEffect,
-                        isPlaying: $isPlaying,
-                        playbackSpeed: $playbackSpeed
-                    )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    
-                    VStack(alignment: .trailing, spacing: 8) {
-                        // Kare sayısı göstergesi
-                        Text("Kare: \(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
-                            .font(.system(.caption, design: .monospaced))
-                            .padding(6)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(6)
+        ZStack {
+            VStack(spacing: 0) {
+                if let url = viewModel.selectedGIFURL {
+                    ZStack(alignment: .topTrailing) {
+                        GIFPlayerView(
+                            url: url,
+                            effect: selectedEffect,
+                            isPlaying: $isPlaying,
+                            playbackSpeed: $playbackSpeed
+                        )
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         
-                        HStack(spacing: 8) {
-                            // GIF bilgi butonu
-                            Button(action: { showGIFInfo.toggle() }) {
-                                Image(systemName: "info.circle")
-                                    .font(.title2)
-                                    .foregroundColor(.secondary)
-                            }
-                            .buttonStyle(.plain)
-                            .help("GIF Bilgileri")
-                            .background(
-                                Circle()
-                                    .fill(.ultraThinMaterial)
-                                    .frame(width: 32, height: 32)
-                            )
+                        VStack(alignment: .trailing, spacing: 8) {
+                            // Kare sayısı göstergesi
+                            Text("Kare: \(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
+                                .font(.system(.caption, design: .monospaced))
+                                .padding(6)
+                                .background(.ultraThinMaterial)
+                                .cornerRadius(6)
                             
-                            // Tema seçici
-                            ThemePickerView()
+                            HStack(spacing: 8) {
+                                // GIF bilgi butonu
+                                Button(action: { showGIFInfo.toggle() }) {
+                                    Image(systemName: "info.circle")
+                                        .font(.title2)
+                                        .foregroundColor(.secondary)
+                                }
+                                .buttonStyle(.plain)
+                                .help("GIF Bilgileri")
+                                .background(
+                                    Circle()
+                                        .fill(.ultraThinMaterial)
+                                        .frame(width: 32, height: 32)
+                                )
+                                
+                                // Tema seçici
+                                ThemePickerView()
+                            }
                         }
+                        .padding(8)
                     }
-                    .padding(8)
+                } else {
+                    EmptyStateView(isDragging: isDragging)
                 }
-            } else {
-                EmptyStateView(isDragging: isDragging)
+                
+                ControlPanelView(
+                    isPlaying: $isPlaying,
+                    playbackSpeed: $playbackSpeed,
+                    showEffectsMenu: $showEffectsMenu,
+                    selectedEffect: $selectedEffect,
+                    onOpenTapped: viewModel.selectGIF,
+                    onPlayPauseTapped: togglePlayback,
+                    onNextFrame: viewModel.nextFrame,
+                    onPreviousFrame: viewModel.previousFrame
+                )
+                .overlay(alignment: .trailing) {
+                    Button(action: { showShortcutsHelp.toggle() }) {
+                        Image(systemName: "keyboard")
+                            .font(.title2)
+                            .foregroundColor(.secondary)
+                    }
+                    .help("Klavye Kısayolları")
+                    .padding(.trailing)
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             
-            ControlPanelView(
-                isPlaying: $isPlaying,
-                playbackSpeed: $playbackSpeed,
-                showEffectsMenu: $showEffectsMenu,
-                selectedEffect: $selectedEffect,
-                onOpenTapped: viewModel.selectGIF,
-                onPlayPauseTapped: togglePlayback,
-                onNextFrame: viewModel.nextFrame,
-                onPreviousFrame: viewModel.previousFrame
-            )
-            .overlay(alignment: .trailing) {
-                Button(action: { showShortcutsHelp.toggle() }) {
-                    Image(systemName: "keyboard")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                }
-                .help("Klavye Kısayolları")
-                .padding(.trailing)
+            // Yükleme göstergesi
+            if viewModel.isLoading {
+                LoadingView()
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .preferredColorScheme(themeSettings.selectedTheme.colorScheme)
         .onChange(of: playbackSpeed) { newSpeed in
             viewModel.updatePlaybackSpeed(newSpeed)
