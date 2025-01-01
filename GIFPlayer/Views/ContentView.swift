@@ -3,15 +3,38 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @StateObject private var viewModel = GIFPlayerViewModel()
+    @EnvironmentObject private var appState: AppState
     @State private var showFileImporter = false
     @State private var showError = false
     @State private var errorMessage = ""
+    @State private var showInfo = false
+    @State private var selectedFileURL: URL?
     
     var body: some View {
         ZStack {
-            if let url = viewModel.gifURL {
+            if let url = selectedFileURL {
                 GIFPlayerView(url: url, viewModel: viewModel)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .overlay(alignment: .bottom) {
+                        VStack(spacing: 0) {
+                            Spacer()
+                            HStack {
+                                ControlPanelView(viewModel: viewModel)
+                                
+                                Button(action: { showInfo = true }) {
+                                    Image(systemName: "info.circle.fill")
+                                        .font(.title2)
+                                }
+                                .buttonStyle(.plain)
+                                .padding(10)
+                                .background(.ultraThinMaterial)
+                                .cornerRadius(10)
+                            }
+                            .padding()
+                        }
+                    }
+                    .sheet(isPresented: $showInfo) {
+                        GIFInfoView(url: url)
+                    }
             } else {
                 VStack(spacing: 20) {
                     Image(systemName: "photo.on.rectangle.angled")
@@ -26,14 +49,9 @@ struct ContentView: View {
                     showFileImporter = true
                 }
             }
-            
-            VStack {
-                Spacer()
-                if viewModel.gifURL != nil {
-                    ControlPanelView(viewModel: viewModel)
-                        .padding()
-                }
-            }
+        }
+        .sheet(isPresented: $appState.showAbout) {
+            AboutView()
         }
         .onDrop(of: [UTType.gif], isTargeted: nil) { providers in
             guard let provider = providers.first else { return false }
@@ -66,6 +84,7 @@ struct ContentView: View {
                 DispatchQueue.main.async {
                     print("GIF yükleniyor: \(url.absoluteString)")
                     viewModel.loadGIF(from: url)
+                    selectedFileURL = url
                 }
             }
             return true
@@ -93,6 +112,7 @@ struct ContentView: View {
                     
                     print("GIF yükleniyor: \(url.absoluteString)")
                     viewModel.loadGIF(from: url)
+                    selectedFileURL = url
                 }
             case .failure(let error):
                 showError(message: "GIF seçilirken hata oluştu: \(error.localizedDescription)")
