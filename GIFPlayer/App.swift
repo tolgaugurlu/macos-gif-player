@@ -14,5 +14,6 @@ struct GIFPlayerApp: App {
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
+        .defaultSize(width: 800, height: 600)
     }
 } 
