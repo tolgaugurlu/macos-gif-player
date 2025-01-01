@@ -6,16 +6,47 @@ Modern ve kullanıcı dostu bir GIF oynatıcı uygulaması.
 Tolga Uğurlu
 
 ## Özellikler
+
+### Temel Özellikler
 - 🎬 Animasyonlu GIF oynatma
 - 🎨 Modern ve minimalist arayüz
 - 🎮 Gelişmiş kontrol seçenekleri:
   - Oynat/Durdur
   - İleri/Geri sarma
-  - Hız kontrolü
+  - Hız kontrolü (0.1x - 2.0x)
   - Kare kare oynatma
-- 🎯 Özelleştirilebilir efektler
+- 🎯 Özelleştirilebilir efektler:
+  - Siyah-Beyaz
+  - Sepya
+  - Bulanık
+  - Parlak
+  - Negatif
+  - Canlı
 - 🔄 Döngü modu
 - ⚡️ Yüksek performanslı oynatma
+
+### Yeni Eklenen Özellikler
+- 📱 Sürükle-Bırak Desteği
+  - GIF dosyalarını doğrudan uygulama penceresine sürükleyip bırakabilme
+  - Sürükleme sırasında görsel geri bildirim
+  - Sadece GIF formatı desteği
+
+- ⌨️ Klavye Kısayolları
+  - Space: Oynat/Durdur
+  - Sağ/Sol Ok: Kare kontrolü
+  - Yukarı/Aşağı Ok: Hız kontrolü
+  - L: Döngü modu
+  - ⌘O: Dosya açma
+  - Kısayol yardım penceresi (Klavye ikonuna tıklayarak açılır)
+
+- 🔢 Kare Sayacı
+  - Mevcut kare/toplam kare göstergesi
+  - Yarı saydam modern tasarım
+
+### Hata Yönetimi
+- Geçersiz dosya formatı kontrolü
+- Kullanıcı dostu hata mesajları
+- Güvenli dosya işleme
 
 ## Gereksinimler
 - macOS 10.15 (Catalina) veya üzeri
@@ -32,12 +63,15 @@ git clone https://github.com/tolgaugurlu/macos-gif-player.git
 
 ## Kullanım
 1. Uygulamayı başlatın
-2. "Aç" düğmesine tıklayarak bir GIF dosyası seçin
+2. GIF dosyası seçmek için:
+   - "Aç" düğmesine tıklayın (veya ⌘O)
+   - veya bir GIF dosyasını pencereye sürükleyin
 3. Kontrol panelini kullanarak GIF'i yönetin:
-   - Oynat/Durdur
-   - Hız ayarı
+   - Oynat/Durdur (Space)
+   - Hız ayarı (↑/↓)
    - Efektler
-   - Kare kontrolü
+   - Kare kontrolü (←/→)
+4. Klavye kısayolları için sağ alt köşedeki klavye ikonuna tıklayın
 
 ## Git Kullanımı
 Proje GitFlow yaklaşımını kullanmaktadır:
@@ -47,14 +81,14 @@ Proje GitFlow yaklaşımını kullanmaktadır:
 - `fix/*`: Hata düzeltmeleri
 
 Commit mesajları şu formatta olmalıdır:
-- `feat: [özellik açıklaması]`
-- `fix: [hata açıklaması]`
-- `docs: [döküman açıklaması]`
+- `özellik: [özellik açıklaması]`
+- `düzeltme: [hata açıklaması]`
+- `belge: [döküman açıklaması]`
 
 ## Katkıda Bulunma
 1. Projeyi fork edin
 2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'feat: Harika özellik eklendi'`)
+3. Değişikliklerinizi commit edin (`git commit -m 'özellik: Harika özellik eklendi'`)
 4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
 5. Pull Request oluşturun
 
