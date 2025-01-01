@@ -11,8 +11,13 @@ struct ContentView: View {
     var body: some View {
         VStack(spacing: 0) {
             if let url = viewModel.selectedGIFURL {
-                GIFPlayerView(url: url, effect: selectedEffect)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                GIFPlayerView(
+                    url: url,
+                    effect: selectedEffect,
+                    isPlaying: $isPlaying,
+                    playbackSpeed: $playbackSpeed
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 EmptyStateView()
             }
@@ -24,24 +29,21 @@ struct ContentView: View {
                 selectedEffect: $selectedEffect,
                 onOpenTapped: viewModel.selectGIF,
                 onPlayPauseTapped: togglePlayback,
-                onNextFrame: nextFrame,
-                onPreviousFrame: previousFrame
+                onNextFrame: viewModel.nextFrame,
+                onPreviousFrame: viewModel.previousFrame
             )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onChange(of: playbackSpeed) { newSpeed in
+            viewModel.updatePlaybackSpeed(newSpeed)
+        }
     }
     
     private func togglePlayback() {
         isPlaying.toggle()
-        // Implement playback logic
-    }
-    
-    private func nextFrame() {
-        // Implement next frame logic
-    }
-    
-    private func previousFrame() {
-        // Implement previous frame logic
+        if isPlaying {
+            viewModel.updatePlaybackSpeed(playbackSpeed)
+        }
     }
 }
 
@@ -53,6 +55,9 @@ struct EmptyStateView: View {
                 .foregroundColor(.gray)
             Text("GIF Dosyası Seçin")
                 .font(.title2)
+                .foregroundColor(.gray)
+            Text("veya sürükleyip bırakın")
+                .font(.subheadline)
                 .foregroundColor(.gray)
         }
     }
