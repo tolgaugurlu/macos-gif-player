@@ -12,10 +12,12 @@ struct GIFPlayerView: NSViewRepresentable {
         let view = NSView()
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
+        view.autoresizingMask = [.width, .height]
         
         // Ana layer'ı oluştur
         let containerLayer = CALayer()
         containerLayer.frame = view.bounds
+        containerLayer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
         view.layer = containerLayer
         
         return view
@@ -34,10 +36,6 @@ struct GIFPlayerView: NSViewRepresentable {
             print("Hata: GIF dosyasına erişilemiyor: \(url.path)")
             return
         }
-        
-        // View boyutunu güncelle
-        nsView.frame = NSRect(x: 0, y: 0, width: 800, height: 600)
-        nsView.layer?.frame = nsView.bounds
         
         // Eğer zaten bir animasyon varsa ve URL aynıysa, tekrar yükleme
         if let currentURL = context.coordinator.currentURL, currentURL == url {
@@ -123,17 +121,7 @@ struct GIFPlayerView: NSViewRepresentable {
             if let firstImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) {
                 DispatchQueue.main.async {
                     layer.contents = firstImage
-                    
-                    // Layer boyutunu GIF boyutuna göre ayarla
-                    let imageSize = CGSize(width: CGFloat(firstImage.width), height: CGFloat(firstImage.height))
-                    let viewSize = view.bounds.size
-                    let scale = min(viewSize.width / imageSize.width, viewSize.height / imageSize.height)
-                    let newSize = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
-                    let newOrigin = CGPoint(
-                        x: (viewSize.width - newSize.width) / 2,
-                        y: (viewSize.height - newSize.height) / 2
-                    )
-                    layer.frame = CGRect(origin: newOrigin, size: newSize)
+                    self.updateLayerFrame(view: view)
                 }
             }
             
@@ -158,6 +146,34 @@ struct GIFPlayerView: NSViewRepresentable {
             DispatchQueue.main.async {
                 viewModel.totalFrames = self.frameCount
             }
+            
+            // Boyut değişikliği için gözlemci ekle
+            NotificationCenter.default.addObserver(
+                forName: NSView.frameDidChangeNotification,
+                object: view,
+                queue: .main) { [weak self] _ in
+                    self?.updateLayerFrame(view: view)
+                }
+        }
+        
+        func updateLayerFrame(view: NSView) {
+            guard let layer = imageLayer,
+                  let image = layer.contents else { return }
+            
+            // CGImage'a dönüştür
+            let cgImage = (image as! CGImage)
+            let imageSize = CGSize(width: CGFloat(cgImage.width), height: CGFloat(cgImage.height))
+            let viewSize = view.bounds.size
+            
+            // En-boy oranını koru
+            let scale = min(viewSize.width / imageSize.width, viewSize.height / imageSize.height)
+            let newSize = CGSize(width: imageSize.width * scale, height: imageSize.height * scale)
+            let newOrigin = CGPoint(
+                x: (viewSize.width - newSize.width) / 2,
+                y: (viewSize.height - newSize.height) / 2
+            )
+            
+            layer.frame = CGRect(origin: newOrigin, size: newSize)
         }
         
         func updateAnimation() {
@@ -180,6 +196,10 @@ struct GIFPlayerView: NSViewRepresentable {
                 currentFrame = (currentFrame + 1) % frameCount
                 lastFrameTime = currentTime
             }
+        }
+        
+        deinit {
+            NotificationCenter.default.removeObserver(self)
         }
     }
 }
