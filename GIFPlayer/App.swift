@@ -93,25 +93,42 @@ struct GIFPlayerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .frame(minWidth: 800, minHeight: 600)
+                .environmentObject(appState)
                 .onAppear {
-                    NSWindow.allowsAutomaticWindowTabbing = false
                     if let window = NSApplication.shared.windows.first {
-                        window.styleMask.remove(.resizable)
+                        window.styleMask.insert([.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView])
                         window.setContentSize(NSSize(width: 800, height: 600))
                         window.center()
+                        window.title = "GIFPlayer"
+                        
+                        // Tam ekran ayarları
+                        window.collectionBehavior = [.fullScreenPrimary, .managed]
+                        window.titlebarAppearsTransparent = false
+                        window.titleVisibility = .visible
+                        window.standardWindowButton(.closeButton)?.isHidden = false
+                        window.standardWindowButton(.miniaturizeButton)?.isHidden = false
+                        window.standardWindowButton(.zoomButton)?.isHidden = false
+                        
+                        // Menü çubuğu her zaman görünür olsun
+                        NSApplication.shared.presentationOptions = []
                     }
                 }
-                .environmentObject(appState)
         }
-        .windowStyle(.hiddenTitleBar)
-        .windowResizability(.contentSize)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button("GIFPlayer Hakkında") {
                     appState.showAbout.toggle()
                 }
                 .keyboardShortcut("i", modifiers: [.command])
+            }
+            
+            CommandGroup(replacing: .windowSize) {
+                Button("Tam Ekran") {
+                    if let window = NSApplication.shared.windows.first {
+                        window.toggleFullScreen(nil)
+                    }
+                }
+                .keyboardShortcut("f", modifiers: [.command, .control])
             }
         }
     }
