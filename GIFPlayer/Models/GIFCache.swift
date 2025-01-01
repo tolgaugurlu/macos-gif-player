@@ -7,6 +7,7 @@ final class GIFCache {
     private var cache = NSCache<NSURL, CGImageSource>()
     private var frameCache = NSCache<NSString, CGImage>()
     private var frameKeys = Set<String>()
+    private var gifCount = 0
     
     private init() {
         // Önbellek boyut limitleri
@@ -25,6 +26,7 @@ final class GIFCache {
     
     func cacheGIF(_ source: CGImageSource, for url: URL) {
         cache.setObject(source, forKey: url as NSURL)
+        gifCount += 1
     }
     
     func getCachedGIF(for url: URL) -> CGImageSource? {
@@ -44,10 +46,12 @@ final class GIFCache {
         cache.removeAllObjects()
         frameCache.removeAllObjects()
         frameKeys.removeAll()
+        gifCount = 0
     }
     
     func removeCachedGIF(for url: URL) {
         cache.removeObject(forKey: url as NSURL)
+        gifCount = max(0, gifCount - 1)
     }
     
     // Belirli bir GIF'in tüm karelerini önbellekten temizle
@@ -64,7 +68,7 @@ final class GIFCache {
     var statistics: String {
         """
         GIF Önbellek İstatistikleri:
-        - Önbellekteki GIF sayısı: \(cache.name?.count ?? 0)
+        - Önbellekteki GIF sayısı: \(gifCount)
         - Önbellekteki kare sayısı: \(frameKeys.count)
         """
     }

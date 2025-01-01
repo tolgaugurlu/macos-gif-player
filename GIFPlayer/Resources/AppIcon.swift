@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(macOS 13.0, *)
 struct AppIcon: View {
     var body: some View {
         ZStack {
@@ -28,8 +29,10 @@ struct AppIcon: View {
 }
 
 // İkon oluşturucu
+@available(macOS 13.0, *)
 struct IconGenerator {
-    static func generateAppIcon() -> NSImage {
+    @MainActor
+    static func generateAppIcon() async -> NSImage {
         let size = CGSize(width: 512, height: 512)
         let renderer = ImageRenderer(content: AppIcon()
             .frame(width: size.width, height: size.height)

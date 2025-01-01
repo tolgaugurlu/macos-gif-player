@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(macOS 13.0, *)
 struct ThemePickerView: View {
     @EnvironmentObject var themeSettings: ThemeSettings
     
@@ -7,7 +8,7 @@ struct ThemePickerView: View {
         Menu {
             ForEach(Theme.allCases, id: \.self) { theme in
                 Button(action: {
-                    themeSettings.selectedTheme = theme
+                    themeSettings.setTheme(theme)
                 }) {
                     HStack {
                         Image(systemName: theme.icon)
