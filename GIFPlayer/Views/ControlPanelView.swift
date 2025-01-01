@@ -2,49 +2,47 @@ import SwiftUI
 
 struct ControlPanelView: View {
     @ObservedObject var viewModel: GIFPlayerViewModel
+    @State private var showInfo = false
     
     var body: some View {
         HStack(spacing: 20) {
-            Button(action: viewModel.previousFrame) {
-                Image(systemName: "backward.frame.fill")
+            // Oynatma kontrolleri
+            HStack(spacing: 15) {
+                Button(action: viewModel.previousFrame) {
+                    Image(systemName: "backward.frame.fill")
+                }
+                
+                Button(action: viewModel.togglePlayPause) {
+                    Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
+                }
+                
+                Button(action: viewModel.nextFrame) {
+                    Image(systemName: "forward.frame.fill")
+                }
             }
-            .keyboardShortcut(.leftArrow, modifiers: [])
+            .font(.title2)
             
-            Button(action: viewModel.togglePlayPause) {
-                Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
-            }
-            .keyboardShortcut(.space, modifiers: [])
-            
-            Button(action: viewModel.nextFrame) {
-                Image(systemName: "forward.frame.fill")
-            }
-            .keyboardShortcut(.rightArrow, modifiers: [])
-            
+            // Kare bilgisi
             Text("\(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
-                .monospacedDigit()
+                .font(.caption)
+                .foregroundColor(.secondary)
                 .frame(width: 80)
             
-            Picker("Efekt", selection: $viewModel.selectedEffect) {
-                Text("Normal").tag(Optional<String>.none)
-                Text("Siyah Beyaz").tag(Optional("blackAndWhite"))
-                Text("Sepya").tag(Optional("sepia"))
-                Text("Negatif").tag(Optional("negative"))
-            }
-            .frame(width: 120)
-            
-            Button(action: { viewModel.toggleInfo() }) {
+            // Bilgi butonu
+            Button(action: { showInfo.toggle() }) {
                 Image(systemName: "info.circle")
-                    .symbolVariant(viewModel.showInfo ? .fill : .none)
+                    .font(.title2)
             }
-            .keyboardShortcut("i", modifiers: [])
+            .popover(isPresented: $showInfo) {
+                if let url = viewModel.gifURL,
+                   let info = GIFInfo(url: url) {
+                    GIFInfoView(info: info)
+                }
+            }
         }
-        .buttonStyle(.bordered)
-        .controlSize(.large)
-        .padding()
-        .background {
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color(.windowBackgroundColor).opacity(0.95))
-                .shadow(radius: 5)
-        }
+        .buttonStyle(.plain)
+        .padding(10)
+        .background(.ultraThinMaterial)
+        .cornerRadius(10)
     }
 } 
