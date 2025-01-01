@@ -16,7 +16,6 @@ let package = Package(
             dependencies: [],
             path: "GIFPlayer",
             resources: [
-                .process("Info.plist"),
                 .process("GIFPlayer.entitlements")
             ]
         )
