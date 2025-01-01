@@ -9,17 +9,28 @@ struct ContentView: View {
     @State private var showEffectsMenu = false
     @State private var selectedEffect: ImageEffect = .none
     @State private var isDragging = false
+    @State private var showShortcutsHelp = false
     
     var body: some View {
         VStack(spacing: 0) {
             if let url = viewModel.selectedGIFURL {
-                GIFPlayerView(
-                    url: url,
-                    effect: selectedEffect,
-                    isPlaying: $isPlaying,
-                    playbackSpeed: $playbackSpeed
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                ZStack(alignment: .topTrailing) {
+                    GIFPlayerView(
+                        url: url,
+                        effect: selectedEffect,
+                        isPlaying: $isPlaying,
+                        playbackSpeed: $playbackSpeed
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                    // Kare sayısı göstergesi
+                    Text("Kare: \(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
+                        .font(.system(.caption, design: .monospaced))
+                        .padding(6)
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(6)
+                        .padding(8)
+                }
             } else {
                 EmptyStateView(isDragging: isDragging)
             }
@@ -34,6 +45,15 @@ struct ContentView: View {
                 onNextFrame: viewModel.nextFrame,
                 onPreviousFrame: viewModel.previousFrame
             )
+            .overlay(alignment: .trailing) {
+                Button(action: { showShortcutsHelp.toggle() }) {
+                    Image(systemName: "keyboard")
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+                .help("Klavye Kısayolları")
+                .padding(.trailing)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: playbackSpeed) { newSpeed in
@@ -48,7 +68,6 @@ struct ContentView: View {
                        let path = String(data: urlData, encoding: .utf8),
                        let url = URL(string: path) {
                         
-                        // Sadece .gif uzantılı dosyaları kabul et
                         if url.pathExtension.lowercased() == "gif" {
                             viewModel.loadGIF(from: url)
                         }
@@ -71,6 +90,34 @@ struct ContentView: View {
                 }
             }
         )
+        .sheet(isPresented: $showShortcutsHelp) {
+            ShortcutsHelpView()
+        }
+        // Klavye kısayolları
+        .onKeyPress(.space) { _ in
+            togglePlayback()
+            return .handled
+        }
+        .onKeyPress(.rightArrow) { _ in
+            viewModel.nextFrame()
+            return .handled
+        }
+        .onKeyPress(.leftArrow) { _ in
+            viewModel.previousFrame()
+            return .handled
+        }
+        .onKeyPress(.upArrow) { _ in
+            playbackSpeed = min(playbackSpeed + 0.1, 2.0)
+            return .handled
+        }
+        .onKeyPress(.downArrow) { _ in
+            playbackSpeed = max(playbackSpeed - 0.1, 0.1)
+            return .handled
+        }
+        .onKeyPress("l") { _ in
+            viewModel.toggleLoop()
+            return .handled
+        }
     }
     
     private func togglePlayback() {
@@ -78,6 +125,40 @@ struct ContentView: View {
         if isPlaying {
             viewModel.updatePlaybackSpeed(playbackSpeed)
         }
+    }
+}
+
+struct ShortcutsHelpView: View {
+    let shortcuts: [KeyboardShortcut] = [
+        .playPause, .nextFrame, .previousFrame,
+        .increaseSpeed, .decreaseSpeed, .toggleLoop,
+        .openFile
+    ]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Klavye Kısayolları")
+                .font(.title)
+                .padding(.bottom)
+            
+            ForEach(shortcuts, id: \.rawValue) { shortcut in
+                HStack {
+                    Text(shortcut.description)
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Text(shortcut.shortcutDescription)
+                        .font(.system(.body, design: .monospaced))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.secondary.opacity(0.2))
+                        .cornerRadius(6)
+                }
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .frame(width: 300, height: 400)
     }
 }
 
