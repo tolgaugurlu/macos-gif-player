@@ -139,6 +139,97 @@ func clearAnimation(from view: NSView) {
 }
 ```
 
+### 6. Arayüz ve Kontrol Sorunları
+
+**Karşılaşılan Sorunlar:**
+- Çift info butonu görünümü
+- Kontrol panelinin tekrarlanması
+- Full screen modunda pencere kontrollerinin kaybolması
+- Menü çubuğunun otomatik gizlenmesi
+- "Cannot convert value of type 'GIFInfo' to expected argument type 'URL'" hatası
+- "Conditional downcast to CoreFoundation type 'CGImage' will always succeed" uyarısı
+
+**Çözüm Süreci:**
+
+1. **Kontrol Paneli Düzenlemesi:**
+```swift
+// Eski yapı (sorunlu)
+VStack {
+    ControlPanelView(viewModel: viewModel)
+    Button(action: { showInfo = true }) {
+        Image(systemName: "info.circle.fill")
+    }
+}
+
+// Yeni yapı (düzeltilmiş)
+HStack(spacing: 20) {
+    // Oynatma kontrolleri tek bir yerde
+    ControlPanelView(viewModel: viewModel)
+    // Info butonu ayrı bir bileşen olarak
+    Button(action: { showInfo = true }) { ... }
+}
+```
+
+2. **Full Screen ve Menü Çubuğu Yönetimi:**
+```swift
+// Pencere ayarları
+window.styleMask.insert([.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView])
+window.collectionBehavior = [.fullScreenPrimary, .managed]
+window.titlebarAppearsTransparent = false
+window.titleVisibility = .visible
+
+// Menü çubuğunun her zaman görünür kalması için
+NSApplication.shared.presentationOptions = []
+```
+
+3. **Tip Dönüşümü Hatalarının Çözümü:**
+```swift
+// CGImage dönüşümü düzeltmesi
+guard let layer = imageLayer,
+      let image = layer.contents else { return }
+
+let cgImage = (image as! CGImage)
+let imageSize = CGSize(width: CGFloat(cgImage.width), height: CGFloat(cgImage.height))
+```
+
+4. **GIFInfo ve URL Yönetimi:**
+```swift
+// Eski yapı (hatalı)
+GIFInfoView(info: info)
+
+// Yeni yapı (düzeltilmiş)
+GIFInfoView(url: url)
+```
+
+**Öğrenilen Dersler:**
+1. macOS arayüz tasarımında pencere yönetiminin önemi
+2. Tip güvenliği ve dönüşümlerin doğru yönetilmesi
+3. Kullanıcı deneyimi için tutarlı kontrol yerleşimi
+4. Full screen modunda pencere kontrollerinin yönetimi
+
+### 7. Environment Object Sorunları
+
+**Karşılaşılan Hata:**
+```
+SwiftUICore/EnvironmentObject.swift:92: Fatal error: No ObservableObject of type AppState found. 
+A View.environmentObject(_:) for AppState may be missing as an ancestor of this view.
+```
+
+**Çözüm:**
+```swift
+@main
+struct GIFPlayerApp: App {
+    @StateObject private var appState = AppState()
+    
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .environmentObject(appState)  // AppState'i environment'a ekledik
+        }
+    }
+}
+```
+
 ## Öğrenilen Dersler
 
 1. **Platform Farklılıkları:**
@@ -174,3 +265,37 @@ func clearAnimation(from view: NSView) {
    - Daha akıcı animasyonlar
    - Gelişmiş kontroller
    - Daha iyi geri bildirim mekanizmaları 
+
+## Güncel Durum ve İyileştirmeler
+
+1. **Arayüz İyileştirmeleri:**
+   - Kontrol paneli modern ve tutarlı bir tasarıma sahip
+   - Oynatma kontrolleri optimize edildi
+   - Bilgi gösterimi daha profesyonel hale getirildi
+
+2. **Pencere Yönetimi:**
+   - Full screen desteği tam çalışır durumda
+   - Menü çubuğu her zaman erişilebilir
+   - Pencere kontrolleri tutarlı görünürlükte
+
+3. **Performans Optimizasyonları:**
+   - Bellek kullanımı iyileştirildi
+   - Frame geçişleri daha akıcı
+   - Tip dönüşümleri güvenli hale getirildi
+
+## Devam Eden Geliştirmeler
+
+1. **Kullanıcı Deneyimi:**
+   - Daha fazla klavye kısayolu
+   - Gelişmiş GIF bilgi gösterimi
+   - Drag & drop iyileştirmeleri
+
+2. **Performans:**
+   - Büyük GIF'ler için optimizasyon
+   - Bellek kullanımı iyileştirmeleri
+   - Frame önbellekleme geliştirmeleri
+
+3. **Güvenlik:**
+   - Dosya erişim izinleri iyileştirmeleri
+   - Sandbox uyumluluğu geliştirmeleri
+   - Hata yönetimi güçlendirmeleri 
