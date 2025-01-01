@@ -10,6 +10,7 @@ struct ContentView: View {
     @State private var selectedEffect: ImageEffect = .none
     @State private var isDragging = false
     @State private var showShortcutsHelp = false
+    @State private var showGIFInfo = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -23,13 +24,29 @@ struct ContentView: View {
                     )
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     
-                    // Kare sayısı göstergesi
-                    Text("Kare: \(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
-                        .font(.system(.caption, design: .monospaced))
-                        .padding(6)
-                        .background(.ultraThinMaterial)
-                        .cornerRadius(6)
-                        .padding(8)
+                    VStack(alignment: .trailing, spacing: 8) {
+                        // Kare sayısı göstergesi
+                        Text("Kare: \(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
+                            .font(.system(.caption, design: .monospaced))
+                            .padding(6)
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(6)
+                        
+                        // GIF bilgi butonu
+                        Button(action: { showGIFInfo.toggle() }) {
+                            Image(systemName: "info.circle")
+                                .font(.title2)
+                                .foregroundColor(.secondary)
+                        }
+                        .buttonStyle(.plain)
+                        .help("GIF Bilgileri")
+                        .background(
+                            Circle()
+                                .fill(.ultraThinMaterial)
+                                .frame(width: 32, height: 32)
+                        )
+                    }
+                    .padding(8)
                 }
             } else {
                 EmptyStateView(isDragging: isDragging)
@@ -93,6 +110,11 @@ struct ContentView: View {
         .sheet(isPresented: $showShortcutsHelp) {
             ShortcutsHelpView()
         }
+        .sheet(isPresented: $showGIFInfo) {
+            if let info = viewModel.gifInfo {
+                GIFInfoView(gifInfo: info)
+            }
+        }
         // Klavye kısayolları
         .onKeyPress(.space) { _ in
             togglePlayback()
@@ -116,6 +138,12 @@ struct ContentView: View {
         }
         .onKeyPress("l") { _ in
             viewModel.toggleLoop()
+            return .handled
+        }
+        .onKeyPress("i") { _ in
+            if viewModel.gifInfo != nil {
+                showGIFInfo.toggle()
+            }
             return .handled
         }
     }
