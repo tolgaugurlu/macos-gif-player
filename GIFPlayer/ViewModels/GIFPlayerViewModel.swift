@@ -57,7 +57,7 @@ class GIFPlayerViewModel: ObservableObject {
                 
                 // GIF formatını kontrol et
                 guard let type = CGImageSourceGetType(source) as String?,
-                      type == kUTTypeGIF as String else {
+                      type == UTType.gif.identifier else {
                     await MainActor.run {
                         loadError = "Geçersiz GIF dosyası"
                         isLoading = false

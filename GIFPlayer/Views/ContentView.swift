@@ -2,7 +2,7 @@ import SwiftUI
 import WebKit
 import UniformTypeIdentifiers
 
-@available(macOS 13.0, *)
+@available(macOS 14.0, *)
 struct ContentView: View {
     @StateObject private var viewModel = GIFPlayerViewModel()
     @StateObject private var themeSettings = ThemeSettings()
