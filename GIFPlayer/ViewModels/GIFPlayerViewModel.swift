@@ -10,8 +10,11 @@ class GIFPlayerViewModel: ObservableObject {
     @Published var frameDelay: Double = 0.1
     @Published var loadError: String?
     @Published var gifInfo: GIFInfo?
+    @Published var isLoading: Bool = false
     
     private var imageSource: CGImageSource?
+    private let cache = GIFCache.shared
+    private var loadTask: Task<Void, Never>?
     
     func selectGIF() {
         let panel = NSOpenPanel()
@@ -28,32 +31,73 @@ class GIFPlayerViewModel: ObservableObject {
     }
     
     func loadGIF(from url: URL) {
-        do {
-            let data = try Data(contentsOf: url)
-            guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
-                loadError = "GIF dosyası okunamadı"
-                return
+        // Önceki yükleme işlemini iptal et
+        loadTask?.cancel()
+        
+        isLoading = true
+        loadTask = Task {
+            do {
+                // Önbellekte var mı kontrol et
+                if let cachedSource = cache.getCachedGIF(for: url) {
+                    imageSource = cachedSource
+                    selectedGIFURL = url
+                    totalFrames = CGImageSourceGetCount(cachedSource)
+                    loadGIFInfo(from: url, source: cachedSource)
+                    return
+                }
+                
+                let data = try Data(contentsOf: url)
+                guard let source = CGImageSourceCreateWithData(data as CFData, nil) else {
+                    await MainActor.run {
+                        loadError = "GIF dosyası okunamadı"
+                        isLoading = false
+                    }
+                    return
+                }
+                
+                // GIF formatını kontrol et
+                guard let type = CGImageSourceGetType(source) as String?,
+                      type == kUTTypeGIF as String else {
+                    await MainActor.run {
+                        loadError = "Geçersiz GIF dosyası"
+                        isLoading = false
+                    }
+                    return
+                }
+                
+                // Önbelleğe al
+                cache.cacheGIF(source, for: url)
+                
+                await MainActor.run {
+                    selectedGIFURL = url
+                    imageSource = source
+                    totalFrames = CGImageSourceGetCount(source)
+                    loadGIFInfo(from: url, source: source)
+                    currentFrame = 0
+                    loadError = nil
+                    isLoading = false
+                }
+                
+                // Kareleri arka planda önbelleğe al
+                Task.detached(priority: .background) {
+                    await self.precacheFrames(source: source, url: url)
+                }
+                
+            } catch {
+                await MainActor.run {
+                    loadError = "GIF dosyası yüklenirken hata oluştu: \(error.localizedDescription)"
+                    isLoading = false
+                }
             }
-            
-            // GIF formatını kontrol et
-            guard let type = CGImageSourceGetType(source) as String?,
-                  type == kUTTypeGIF as String else {
-                loadError = "Geçersiz GIF dosyası"
-                return
-            }
-            
-            selectedGIFURL = url
-            imageSource = source
-            totalFrames = CGImageSourceGetCount(source)
-            
-            // GIF bilgilerini yükle
-            loadGIFInfo(from: url, source: source)
-            
-            currentFrame = 0
-            loadError = nil
-            print("GIF yüklendi: \(totalFrames) kare, \(frameDelay) saniye gecikme")
-        } catch {
-            loadError = "GIF dosyası yüklenirken hata oluştu: \(error.localizedDescription)"
+        }
+    }
+    
+    private func precacheFrames(source: CGImageSource, url: URL) async {
+        let frameCount = CGImageSourceGetCount(source)
+        for i in 0..<frameCount {
+            guard let frame = CGImageSourceCreateImageAtIndex(source, i, nil) else { continue }
+            let key = "\(url.absoluteString)_frame_\(i)"
+            cache.cacheFrame(frame, for: key)
         }
     }
     
@@ -108,6 +152,26 @@ class GIFPlayerViewModel: ObservableObject {
         frameDelay = averageDelay
     }
     
+    func getFrame(at index: Int) -> CGImage? {
+        guard let url = selectedGIFURL else { return nil }
+        
+        // Önbellekten kareyi al
+        let key = "\(url.absoluteString)_frame_\(index)"
+        if let cachedFrame = cache.getCachedFrame(for: key) {
+            return cachedFrame
+        }
+        
+        // Önbellekte yoksa, kaynaktan yükle ve önbelleğe al
+        guard let source = imageSource,
+              index < totalFrames,
+              let frame = CGImageSourceCreateImageAtIndex(source, index, nil) else {
+            return nil
+        }
+        
+        cache.cacheFrame(frame, for: key)
+        return frame
+    }
+    
     func nextFrame() {
         guard totalFrames > 0 else { return }
         currentFrame = (currentFrame + 1) % totalFrames
@@ -132,12 +196,10 @@ class GIFPlayerViewModel: ObservableObject {
         isLooping.toggle()
     }
     
-    func getFrame(at index: Int) -> CGImage? {
-        guard let source = imageSource,
-              index < totalFrames,
-              let cgImage = CGImageSourceCreateImageAtIndex(source, index, nil) else {
-            return nil
+    deinit {
+        loadTask?.cancel()
+        if let url = selectedGIFURL {
+            cache.clearFrameCache(for: url)
         }
-        return cgImage
     }
 } 
