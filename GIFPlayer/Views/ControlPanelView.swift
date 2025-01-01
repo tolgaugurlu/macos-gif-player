@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ControlPanelView: View {
     @ObservedObject var viewModel: GIFPlayerViewModel
-    @State private var showInfo = false
     
     var body: some View {
         HStack(spacing: 20) {
@@ -10,37 +9,27 @@ struct ControlPanelView: View {
             HStack(spacing: 15) {
                 Button(action: viewModel.previousFrame) {
                     Image(systemName: "backward.frame.fill")
+                        .font(.title2)
                 }
                 
                 Button(action: viewModel.togglePlayPause) {
-                    Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
+                    Image(systemName: viewModel.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                        .font(.system(size: 35))
                 }
                 
                 Button(action: viewModel.nextFrame) {
                     Image(systemName: "forward.frame.fill")
+                        .font(.title2)
                 }
             }
-            .font(.title2)
+            .buttonStyle(.plain)
             
             // Kare bilgisi
             Text("\(viewModel.currentFrame + 1)/\(viewModel.totalFrames)")
-                .font(.caption)
+                .font(.system(.caption, design: .monospaced))
                 .foregroundColor(.secondary)
                 .frame(width: 80)
-            
-            // Bilgi butonu
-            Button(action: { showInfo.toggle() }) {
-                Image(systemName: "info.circle")
-                    .font(.title2)
-            }
-            .popover(isPresented: $showInfo) {
-                if let url = viewModel.gifURL,
-                   let info = GIFInfo(url: url) {
-                    GIFInfoView(info: info)
-                }
-            }
         }
-        .buttonStyle(.plain)
         .padding(10)
         .background(.ultraThinMaterial)
         .cornerRadius(10)
